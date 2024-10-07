@@ -38,7 +38,7 @@ const CourseInfo = {
       learner_id: 125,
       assignment_id: 1,
       submission: {
-        submitted_at: "2023-01-27",
+        submitted_at: "2023-01-25",
         score: 47
       }
     },
@@ -100,22 +100,25 @@ const CourseInfo = {
     
     for (let i = 0; i < ag.assignments.length; i++) {
         if (submissions[i].submission.submitted_at > ag.assignments[i].due_at) {
-            // deduct 10 % using a function
             let points_possible_to_deduct = ag.assignments[i].points_possible;
             let percent_Amount = 10;
             ag.assignments[i].points_possible -= percentDeduction(points_possible_to_deduct, percent_Amount); 
-        } 
+        }
     }
-    
-    // for (let i = 0; i < submissions.length; i++){
-    //     console.log(submissions[i].submission.score);
-    // }
+    // calculate avg
+    for (let i = 0; i < submissions.length; i++){
+        console.log(submissions[i].submission.score);
+    }
     return result;
   }
   
   function percentDeduction(totalAmount, percent){
     return totalAmount/ percent;
   }
+
+//   function getAvg () {
+
+//   }
   const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
   
   console.log(result);
