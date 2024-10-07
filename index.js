@@ -38,7 +38,7 @@ const CourseInfo = {
       learner_id: 125,
       assignment_id: 1,
       submission: {
-        submitted_at: "2023-01-25",
+        submitted_at: "2023-01-27",
         score: 47
       }
     },
@@ -77,8 +77,40 @@ const CourseInfo = {
   ];
   
   function getLearnerData(course, ag, submissions) {
-    // here, we would process this data to achieve the desired result.
-    // const result = [
+    const result = [];
+    try {
+        if (course.id !== ag.id) {
+            throw new Error("Course Id not matching")
+        }
+    } catch (err) {
+        console.info(err);      
+    }
+    for (let i = 0; i < ag.assignments.length; i++){
+        try {
+            if (typeof ag.assignments[i].points_possible !== "number"){
+                throw new Error (`Points possible: ${ag.assignments[i].points_possible} should be a number`)
+            } 
+            if (ag.assignments[i].points_possible <= 0) {
+                throw new Error (`Points possible: ${ag.assignments[i].points_possible} cannot be less than or equal to 0 `)
+            }
+        } catch (err) {
+            console.info(err);
+        }
+    }
+    // for (let i = 0; i < ag.assignments.length; i++) {
+    //     if (submissions[i].submission.submitted_at > ag.assignments[i].due_at) {
+    //         // deduct 10 persent
+    //     }
+    // }
+    // return result;
+  }
+  
+  const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+  
+  console.log(result);
+  
+
+   // const result = [
     //   {
     //     id: 125,
     //     avg: 0.985, // (47 + 150) / (50 + 150)
@@ -92,11 +124,7 @@ const CourseInfo = {
     //     2: 0.833 // late: (140 - 15) / 150
     //   }
     // ];
-  
-    return result;
-  }
-  
-  const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
-  
-  console.log(result);
-  
+
+
+
+// COPYRIGHTS @Ray2024: PLEASE DO NOT COPY MY CODE!!!!!!!!!!!!!!!!!!!!!!!!!I am trying to preserve my spot in the program...
