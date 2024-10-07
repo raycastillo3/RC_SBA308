@@ -78,30 +78,30 @@ const CourseInfo = {
   
   function getLearnerData(course, ag, submissions) {
     const result = [];
-    try {
-        if (course.id !== ag.id) {
-            throw new Error("Course Id not matching")
-        }
-    } catch (err) {
-        console.info(err);      
-    }
-    for (let i = 0; i < ag.assignments.length; i++){
-        try {
-            if (typeof ag.assignments[i].points_possible !== "number"){
-                throw new Error (`Points possible: ${ag.assignments[i].points_possible} should be a number`)
-            } 
-            if (ag.assignments[i].points_possible <= 0) {
-                throw new Error (`Points possible: ${ag.assignments[i].points_possible} cannot be less than or equal to 0 `)
-            }
-        } catch (err) {
-            console.info(err);
-        }
-    }
-    // for (let i = 0; i < ag.assignments.length; i++) {
-    //     if (submissions[i].submission.submitted_at > ag.assignments[i].due_at) {
-    //         // deduct 10 persent
+    // try {
+    //     if (course.id !== ag.id) {
+    //         throw new Error("Course Id not matching")
+    //     }
+    // } catch (err) {
+    //     console.info(err);      
+    // }
+    // for (let i = 0; i < ag.assignments.length; i++){
+    //     try {
+    //         if (typeof ag.assignments[i].points_possible !== "number"){
+    //             throw new Error (`Points possible: ${ag.assignments[i].points_possible} should be a number`)
+    //         } 
+    //         if (ag.assignments[i].points_possible <= 0) {
+    //             throw new Error (`Points possible: ${ag.assignments[i].points_possible} cannot be less than or equal to 0 `)
+    //         }
+    //     } catch (err) {
+    //         console.info(err);
     //     }
     // }
+    for (let i = 0; i < ag.assignments.length; i++) {
+        if (submissions[i].submission.submitted_at > ag.assignments[i].due_at) {
+            ag.assignments[i].points_possible -= 10; 
+        }
+    }
     // return result;
   }
   
