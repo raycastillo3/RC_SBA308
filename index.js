@@ -97,14 +97,25 @@ const CourseInfo = {
     //         console.info(err);
     //     }
     // }
+    
     for (let i = 0; i < ag.assignments.length; i++) {
         if (submissions[i].submission.submitted_at > ag.assignments[i].due_at) {
-            ag.assignments[i].points_possible -= 10; 
-        }
+            // deduct 10 % using a function
+            let points_possible_to_deduct = ag.assignments[i].points_possible;
+            let percent_Amount = 10;
+            ag.assignments[i].points_possible -= percentDeduction(points_possible_to_deduct, percent_Amount); 
+        } 
     }
-    // return result;
+    
+    // for (let i = 0; i < submissions.length; i++){
+    //     console.log(submissions[i].submission.score);
+    // }
+    return result;
   }
   
+  function percentDeduction(totalAmount, percent){
+    return totalAmount/ percent;
+  }
   const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
   
   console.log(result);
