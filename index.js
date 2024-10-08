@@ -33,6 +33,7 @@ const CourseInfo = {
   };
   
   // The provided learner submission data.
+  //YYYY-MM-DD
   const LearnerSubmissions = [
     {
       learner_id: 125,
@@ -105,39 +106,100 @@ const CourseInfo = {
             ag.assignments[i].points_possible -= percentDeduction(points_possible_to_deduct, percent_Amount); 
         }
     }
+
     // calculate avg
-    for (let i = 0; i < submissions.length; i++){
-        console.log(submissions[i].submission.score);
+    const uniqueSubmissionsIds = new Set();
+    for (let obj of submissions){
+       if (!(uniqueSubmissionsIds.has(obj.learner_id))){
+        uniqueSubmissionsIds.add(obj.learner_id)
+       } else {
+        continue;
+       }
     }
+    let sumsOfSubmissions = [];
+    let temp = 0;
+    for (let id of uniqueSubmissionsIds) {
+        temp = getSumOfSubmissions(submissions, id);      
+        sumsOfSubmissions.push(temp)
+    }
+
+    const uniqueAssignmentsGroupIds = new Set();
+    for (let obj of ag.assignments){
+        uniqueAssignmentsGroupIds.add(obj.id);
+    }
+    let sumsOfAssignmetGroups = [];
+    let tempAg = 0;
+    for (let id of uniqueAssignmentsGroupIds) {
+        tempAg = getSumOfAssignmets(ag.assignments, id); 
+        sumsOfAssignmetGroups.push(tempAg);
+    }
+
+    let avgs = [], element1 = 0, element2 = 0;
+    console.log(sumsOfSubmissions);
+    console.log(sumsOfAssignmetGroups);
+
+    // for (let num of sumsOfSubmissions) {
+    //     element1 = sumsOfSubmissions.shift();
+    //     element2 = sumsOfAssignmetGroups.shift();
+    //     avgs.push(element1 / element2); 
+    // }
+    // console.log(sumsOfAssignmetGroups);
+    // console.log(sumsOfSubmissions);
+    // console.log(element1, element2);
+   
+    // console.log(avgs);
+
     return result;
   }
-  
+
+  function getSumOfSubmissions (submission, id) {
+    let sum = 0;
+    for (const obj of submission){
+       if (obj.learner_id === id){
+        sum += obj.submission.score
+       }
+    }
+    return sum;
+  }
+//   console.log(getSumOfSubmissions(LearnerSubmissions));
+
+  function getSumOfAssignmets (ag, id) {
+    let sum = 0;
+    for (let i = 0; i < ag.length; i++){
+        if (ag[i].id === id) {
+            console.log(ag[i].points_possible);
+            sum += ag[i].points_possible;
+        }
+    }
+    return sum;
+    
+  }
+
+// console.log(getSumOfAssignmets(AssignmentGroup));
+
   function percentDeduction(totalAmount, percent){
     return totalAmount/ percent;
   }
 
-//   function getAvg () {
-
-//   }
   const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
   
   console.log(result);
   
 
-   // const result = [
-    //   {
-    //     id: 125,
-    //     avg: 0.985, // (47 + 150) / (50 + 150)
-    //     1: 0.94, // 47 / 50
-    //     2: 1.0 // 150 / 150
-    //   },
-    //   {
-    //     id: 132,
-    //     avg: 0.82, // (39 + 125) / (50 + 150)
-    //     1: 0.78, // 39 / 50
-    //     2: 0.833 // late: (140 - 15) / 150
-    //   }
-    // ];
+//    const result = [
+//       {
+//         id: 125,        V submissions assignment id | V ag.assignments based on id
+//         avg: 0.985, // (47 + 150 + 400) / (50 + 150)
+//         1: 0.94, // 47 / 50
+//         2: 1.0 // 150 / 150
+//       },
+//       {
+//         id: 132,
+//         avg: 0.82, // (39 + 140) / (50 + 150)
+//         1: 0.78, // 39 / 50
+//         2: 0.833 // late: (140 - 15) / 150
+//       }
+//     ];
 
 
 
