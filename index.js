@@ -79,7 +79,7 @@ const CourseInfo = {
   
   function getLearnerData(course, ag, submissions) {
     // const result = [];
-    // validateLearnerData(course, ag);
+    validateLearnerData(course, ag);
     //deducts 10 from late assignments: Since obj are passed by reference in JS. 
     //I can deduct using a helper function and it will change the object in this function
     latePenaltyDeduction(ag, submissions);
@@ -108,7 +108,7 @@ const CourseInfo = {
 
   function submittedAssignments(ag, submissions) {
     const result = [];
-    let i = 0, j = 0;
+    let i = 0;
     while (i < submissions.length && i < ag.assignments.length) {
         let submittedDate = new Date(submissions[i].submission.submitted_at);
         let dueDate = new Date(ag.assignments[i].due_at);
@@ -134,9 +134,9 @@ function averageOfAssignment (subScore, pPossible) {
         let submittedDate = new Date(submissions[i].submission.submitted_at); 
         let dueDate = new Date(ag.assignments[i].due_at)
         if (submittedDate > dueDate) {
-            let points_possible_to_deduct = ag.assignments[i].points_possible;
-            let percent_Amount = 10;
-            ag.assignments[i].points_possible -= percentDeduction(points_possible_to_deduct, percent_Amount); 
+            let pointsToDeduct = ag.assignments[i].points_possible;
+            let percentAmount = 10;
+            ag.assignments[i].points_possible -= percentDeduction(pointsToDeduct, percentAmount); 
         }
     }
 }
