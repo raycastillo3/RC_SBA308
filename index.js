@@ -78,18 +78,37 @@ const CourseInfo = {
   ];
   
   function getLearnerData(course, ag, submissions) {
-    const result = [];
-    // validateLearnerData(course, ag);
+    // const result = [];
+    validateLearnerData(course, ag);
+    //deducts 10 from late assignments: Since obj are passed by reference in JS. 
+    //I can deduct using a helper function and it will change the object in this function
+    latePenaltyDeduction(ag, submissions);
 
-    //deducts 10 from late assignments:
-    // console.log(ag.assignments[0].points_possible);
-    // latePenaltyDeduction(ag, submissions);
-    // console.log(ag.assignments[0].points_possible);
-
-
+    let avgsOfAssignment = submittedAssignments(ag, submissions);
     // //average for assignments that have been submitted within the deadline: 
+    console.log(avgsOfAssignment);
+
+   const result = [
+      {
+        id: 125,        
+        avg: 0.985, // (47 + 150) / (50 + 150)
+        1: 0.94, // 47 / 50
+        2: 1.0 // 150 / 150
+      },
+      {
+        id: 132,
+        avg: 0.82, // (39 + 140) / (50 + 150)
+        1: 0.78, // 39 / 50
+        2: 0.833 // late: (140 - 15) / 150
+      }
+    ];
+    
+    return result;
+  }
+
+  function submittedAssignments(ag, submissions) {
+    const result = [];
     let i =0;
-    let avgsOfAssignment = [];
     while (i < ag.assignments.length && i < submissions.length) {
         let submittedDate = new Date(submissions[i].submission.submitted_at);
         let dueDate = new Date(ag.assignments[i].due_at);
@@ -98,16 +117,16 @@ const CourseInfo = {
             let submissionScore = submissions[i].submission.score;
             let pointsPossible = ag.assignments[i].points_possible;
             let tempAvgOfAssignment = averageOfAssignment(submissionScore, pointsPossible);
-            avgsOfAssignment.push(tempAvgOfAssignment);
+            result.push(tempAvgOfAssignment);
             // averageOfAssignment(ag, submissions, submissions[i].assignment_id)
             // same learner Id & score
-        } 
+        } else {
+            continue;
+        }
         i++;
     }
-    console.log(avgsOfAssignment);
-    return result;
-  }
-
+    return result; 
+}
 function averageOfAssignment (subScore, pPossible) {
     console.log(subScore, pPossible);
     return subScore / pPossible;
@@ -181,20 +200,7 @@ function averageOfAssignment (subScore, pPossible) {
   console.log(result);
   
 
-//    const result = [
-//       {
-//         id: 125,        V submissions assignment id | V ag.assignments based on id
-//         avg: 0.985, // (47 + 150) / (50 + 150)
-//         1: 0.94, // 47 / 50
-//         2: 1.0 // 150 / 150
-//       },
-//       {
-//         id: 132,
-//         avg: 0.82, // (39 + 140) / (50 + 150)
-//         1: 0.78, // 39 / 50
-//         2: 0.833 // late: (140 - 15) / 150
-//       }
-//     ];
+
 
 
 
